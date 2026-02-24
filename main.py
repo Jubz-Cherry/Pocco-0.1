@@ -1,18 +1,29 @@
-from chat_service import build_response
-from weather_service import get_weather, detect_intent
+from chat_service import weather_response
+from weather_service import get_weather, extract_city
 
 if __name__ == "__main__":
-    user_input = input("Pergunte sobre o clima: ")
 
-    intent, city = detect_intent(user_input)
+    print("Maju: Olá sou a Maju, sua assistente virtual de clima. Como posso ajudar?")
 
-    if intent == "weather_current" and city:
+    while True:
+        user_input = input("Você: ")
+
+        if user_input.lower() in ["não", "nao", "n", "sair", "exit"]:
+            print("Maju: Tudo bem. Qualquer coisa, é só me chamar. Até mais!")
+            break
+
+        city = extract_city(user_input)
+
+        if not city:
+            print("Maju: Não consegui identificar a cidade. Ex: 'Como está o tempo em Recife?'")
+            continue
+
         data = get_weather(city)
 
         if not data:
-            print("Não consegui obter dados dessa cidade.")
-        else:
-            response = build_response(city, data)
-            print(response)
-    else:
-        print("Eu só respondo perguntas sobre clima. Ex: 'Como está o tempo em Recife?'")
+            print("Maju: Não consegui obter dados dessa cidade.")
+            continue
+
+        response = weather_response(city, data, user_question=user_input)
+        print(f"Maju: {response}")
+        print("Maju: Quer saber de mais alguma coisa?")
