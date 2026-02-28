@@ -51,7 +51,7 @@ Maju/
 
 
 git clone <url-do-repositorio>
-cd Pocco
+cd Maju
 
 
 2. Crie um ambiente virtual (opcional, mas recomendado):
